@@ -11,21 +11,21 @@ export default function SideBar() {
       name: "Beranda",
       icon: "/icon/Icon_Home.svg",
       icon_active: "/icon/Icon_Home_Active.svg",
-      path: "/"
+      Link: "/"
     },
     {
       id: "menu_monitoring",
       name: "Monitoring",
       icon: "/icon/Icon_Mo.svg",
       icon_active: "/icon/Icon_Mo_Active.svg",
-      path: "/monitoring"
+      Link: "/monitoring"
     },
     {
       id: "menu_logdata",
       name: "Log Data",
       icon: "/icon/Icon_Log.svg",
       icon_active: "/icon/Icon_Log_Active.svg",
-      path: "/logdata"
+      Link: "/logdata"
     }
   ];
 
@@ -60,10 +60,10 @@ export default function SideBar() {
               {menus.map((menu) => (
                 <Link
                   key={menu.id}
+                  to={menu.Link}
                   className={`px-4 py-2 rounded-lg my-3 flex items-center gap-6 cursor-pointer ${
                     selectedMenu === menu.id ? "bg-lightBlue" : "bg-white"
                   }`}
-                  // to={menu.path}
                   onClick={() => handleMenu(menu)}
                 >
                   <Image
