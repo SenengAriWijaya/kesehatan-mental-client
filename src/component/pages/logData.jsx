@@ -5,7 +5,7 @@ import LogData from "../Main/LogData";
 const DashboardLogData = () => {
   return (
     <>
-      <div className="bg-[#F3F2F7] h-screen">
+      <div className="h-screen">
         <SideBar />
         <LogData />
       </div>

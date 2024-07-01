@@ -1,16 +1,16 @@
 import React from "react";
 import SideBar from "../Menu/SideBar";
-import Home from "../Main/Home";
+import FormData from "../Main/Form";
 
-const DashboardHome = () => {
+const DashboardFormData = () => {
   return (
     <>
       <div className=" h-screen">
         <SideBar />
-        <Home />
+        <FormData />
       </div>
     </>
   );
 };
 
-export default DashboardHome;
+export default DashboardFormData;

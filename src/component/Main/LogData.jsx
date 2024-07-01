@@ -12,30 +12,42 @@ import {
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 import useSWR from "swr";
 import axios from "axios";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+// import { sensors } from "../Data/dataSensors";
+// import { users } from "../Data/dataUsers";
 
 export default function LogData() {
+  const [page, setPage] = useState(1);
+  
+  useEffect(() => {
+    if (!localStorage.getItem("name") && !localStorage.getItem("username")) {
+      console.log("anda belum login");
+      window.location.replace("/");
+    }
+  });
+
   const fetcher = async () => {
-    const response = await axios.get("http://localhost:3100/api/allSensors");
-    return response.data;
+    const response = await axios.get("http://localhost:3000/api/allSensors");
+    return response.data.data;
+    // console.log(response);
   };
 
-  const { data } = useSWR("sensors", fetcher);
-  const [page, setPage] = useState(1);
+  const { data } = useSWR("allDataSensors", fetcher);
+
   const rowsPerPage = 10;
 
   const pages = Math.ceil(data?.length / rowsPerPage);
 
-  const dataSensors = useMemo (() => {
+  const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
     return data ? data.slice(start, end) : [];
-    // return data.slice(start, end)
   }, [data, page]);
 
   if (!data) return <div>Loading...</div>;
-  const dataMenu = [
+
+  const menus = [
     {
       key: "id",
       label: "No",
@@ -45,107 +57,95 @@ export default function LogData() {
       label: "Tanggal",
     },
     {
-      key: "waktu",
-      label: "Waktu",
+      key: "detak_jantung",
+      label: "Detak Jantung",
     },
     {
-      key: "jam",
-      label: "Jam",
+      key: "kelembapan_kulit",
+      label: "Kelembapan Kulit",
     },
     {
-      key: "sensor_co",
-      label: "CO",
+      key: "status_jantung",
+      label: "Status Jantung",
     },
     {
-      key: "sensor_pm",
-      label: "PM2.5",
+      key: "status_kulit",
+      label: "Status Kulit",
     },
     {
-      key: "kategori",
-      label: "Kategori",
+      key: "status_stres",
+      label: "Status Stres",
     },
   ];
 
   return (
     <>
-      <div className="bg-[#F3F2F7]">
-        <div className="ml-[300px] p-8">
-          <div className="relative flex items-center">
-            <input
-              type="text"
-              className="card w-[750px] py-2 px-3 font-normal text-[16px] font-barlow"
-              placeholder="Cari Disini"
-            />
-            <div className="absolute right-[440px]">
-              <Image
-                src="/icon/search.svg"
-                alt="Search Icon"
-                className="cursor-pointer"
+      <div>
+        <div className="ml-[321px] py-8 px-10">
+          <div className="flex justify-between items-center">
+            <span className="font-barlow font-bold text-[36px]">
+              Dashboard Log Data
+            </span>
+            <div className="relative flex items-center">
+              <input
+                type="text"
+                className="w-[361px] px-10 h-[40px] rounded-[5px] bg-lightturquoise opacity-70 pr-10 placeholder-black placeholder-opacity-70"
+                placeholder="Search"
               />
-            </div>
-            <div className="pl-20 ">
-              <div className="bg-lightBlue p-2 rounded-xl cursor-pointer">
+              <div className="absolute left-2">
                 <Image
-                  src="/icon/Icon_Notifikasi.svg"
-                  alt="Search Notifikasi"
-                  className="cursor-pointer"
+                  src="/images/main/search.svg"
+                  alt="Search Icon"
+                  className="cursor-pointer w-[25px] h-[36px]"
                 />
               </div>
             </div>
-            <div className="ml-10">
-              <Image src="/icon/separator.svg" className="cursor-pointer" />
+          </div>
+          <div className="card mt-8">
+            <div className="font-barlow font-bold text-[30px] px-6 py-3 text-darkturquoise">
+              Log Data Sensors
             </div>
-          </div>
-          <div className="py-6">
-            <h1 className="font-semibold text-[32px] font-barlow text-black">
-              Log Data
-            </h1>
-            <p className=" font-medium text-[18px] font-barlow text-gray">
-              List Log Data
-            </p>
-          </div>
-          <div className="py-4 mb-20">
-            <Table
-              aria-label="Example table with dynamic content"
-              bottomContent={
-                <div className="flex w-full justify-center">
-                  <Pagination
-                    isCompact
-                    showControls
-                    showShadow
-                    color="secondary"
-                    page={page}
-                    total={pages}
-                    onChange={(page) => setPage(page)}
-                  />
-                </div>
-              }
-              classNames={{
-                wrapper: "min-h-[222px]",
-              }}
-            >
-              <TableHeader columns={dataMenu}>
-                {(menu) => (
-                  <TableColumn
-                    key={menu.key}
-                    className="px-10 bg-second text-white"
-                  >
-                    {menu.label}
-                  </TableColumn>
-                )}
-              </TableHeader>
-              <TableBody items={dataSensors}>
-                {(item) => (
-                  <TableRow key={item.key}>
-                    {(columnKey) => (
-                      <TableCell className="px-10">
-                        {getKeyValue(item, columnKey)}
-                      </TableCell>
-                    )}
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+            <div className=" px-6 pb-6">
+              <Table
+                aria-label="Example table with client side pagination"
+                bottomContent={
+                  <div className="flex w-full justify-center">
+                    <Pagination
+                      isCompact
+                      showControls
+                      showShadow
+                      color="secondary"
+                      page={page}
+                      total={pages}
+                      onChange={(page) => setPage(page)}
+                    />
+                  </div>
+                }
+                classNames={{
+                  wrapper: "min-h-[222px]",
+                }}
+              >
+                <TableHeader columns={menus}>
+                  {(menu) => (
+                    <TableColumn
+                      key={menu.key}
+                      className=" bg-darkorange text-lightwhite"
+                    >
+                      {menu.label}
+                    </TableColumn>
+                  )}
+                </TableHeader>
+                <TableBody items={items}>
+                  {(item) => (
+                    <TableRow key={item.key}>
+                      {(columnKey) => (
+                        <TableCell>{getKeyValue(item, columnKey)}</TableCell>
+                      )}
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
           </div>
         </div>
       </div>
