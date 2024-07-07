@@ -49,14 +49,17 @@ export default function Home() {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    return data ? data.slice(start, end) : [];
+    return data ? data.slice(start, end).map((item, index) => ({
+      ...item,
+      no: start + index+1
+    })) : [];
   }, [data, page]);
 
   if(!data) return <div>Loading...</div>
 
   const menus = [
     {
-      key: "id",
+      key: "no",
       label: "No",
     },
     {

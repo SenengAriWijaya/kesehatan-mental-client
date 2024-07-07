@@ -73,7 +73,7 @@ export default function FormData() {
 
   const fetcher = async () => {
     const response = await axios.get("http://localhost:3000/api/users");
-    return response.data;
+    return response.data.data;
   };
 
   // const { users } = useSWR("users", fetcher);
@@ -88,13 +88,16 @@ export default function FormData() {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    return data ? data.slice(start, end) : [];
+    return data ? data.slice(start, end).map((item, index) => ({
+      ...item,
+      no:start + index + 1
+    })) : [];
   }, [data, page]);
 
   if (!data) return <div>Loading...</div>;
   const menus = [
     {
-      key: "id",
+      key: "no",
       label: "No",
     },
     {
