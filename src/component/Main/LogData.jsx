@@ -27,7 +27,7 @@ export default function LogData() {
   });
 
   const fetcher = async () => {
-    const response = await axios.get("http://localhost:3000/api/allSensors");
+    const response = await axios.get("http://157.10.161.159:3000/api/allsensors");
     return response.data.data;
     // console.log(response);
   };

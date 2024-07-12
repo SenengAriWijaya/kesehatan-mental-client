@@ -40,7 +40,7 @@ export default function Login() {
 
     axios({
       method: "POST",
-      url: "http://localhost:3000/api/users/login",
+      url: "http://157.10.161.159:3000/api/users/login",
       data: requestingData
     }).then((result) => {
       //console.log(result.data);

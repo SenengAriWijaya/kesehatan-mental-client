@@ -27,13 +27,13 @@ export default function Home() {
   const dataSensors = (url) => axios.get(url).then((res) => res.data.data);
 
   const { data: Sensors } = useSWR(
-    "http://localhost:3000/api/sensors",
+    "http://157.10.161.159:3000/api/sensors",
     dataSensors,
     { refreshInterval: 1 }
   );
 
   const fetcher = async () => {
-    const response = await axios.get("http://localhost:3000/api/allSensors");
+    const response = await axios.get("http://157.10.161.159:3000/api/allsensors");
     return response.data.data;
     // console.log(response);
   };

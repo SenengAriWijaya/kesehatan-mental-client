@@ -45,7 +45,7 @@ export default function FormData() {
   const saveData = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/api/users", {
+      await axios.post("http://157.10.161.159:3000/api/users", {
         tanggal: tanggal,
         nama: nama,
         detak_jantung: detakJantung,
@@ -72,7 +72,7 @@ export default function FormData() {
   });
 
   const fetcher = async () => {
-    const response = await axios.get("http://localhost:3000/api/users");
+    const response = await axios.get("http://157.10.161.159:3000/api/users");
     return response.data.data;
   };
 
